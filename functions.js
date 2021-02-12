@@ -18,7 +18,6 @@ var connection = mysql.createConnection({
 
 class Functions {
     constructor() {
-
     }
 
     addData() {
@@ -186,6 +185,33 @@ class Functions {
 
                 }
             });
+    }
+
+    updateData() {
+        connection.query("SELECT * FROM employees", function(err, results){
+            if (err) throw err;
+        
+
+        inquirer
+            .prompt([
+                {
+                    name: "emp_update",
+                    type: "rawlist",
+                    choices: function() {
+                        var choiceArray = [];
+                        for (var i = 0; i < results.length; i++) {
+                            choiceArray.push(results[i].first_name + " " + results[i].last_name);
+                        }
+                        return choiceArray;
+                    },
+                    message: "Which employee would you like to update?"
+                },
+                
+            ])
+            .then(function(answer) {
+                console.log(answer);
+            });
+        });
     }
 
 
