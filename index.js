@@ -22,3 +22,34 @@ connection.connect(function(err) {
     // run the start function after the connection is made to prompt the user
     start();
   });
+
+// function to run initial prompt to user
+function start() {
+    inquirer
+        .prompt({
+            name: "action",
+            type: "rawlist",
+            message: "Welcome to Employee Tracker. What would you like to do?",
+            choices: [
+                "Add departments, roles, employees",
+                "View departments, roles, employees",
+                "Update employee roles"
+            ]
+        })
+        .then(function(answer) {
+            switch (answer.action) {
+            case "Add departments, roles, employees":
+                addData();
+                break;
+            
+            case "View departments, roles, employees":
+                viewData();
+                break;
+            
+            case "Update employee roles":
+                updateData();
+                break;
+            } 
+
+    }); // end .then function
+} //end start() function
