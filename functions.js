@@ -187,11 +187,20 @@ class Functions {
             });
     }
 
+    //var query = "SELECT top_albums.year, top_albums.album, top_albums.position, top5000.song, top5000.artist ";
+    //query += "FROM top_albums INNER JOIN top5000 ON (top_albums.artist = top5000.artist AND top_albums.year ";
+    //query += "= top5000.year) WHERE (top_albums.artist = ? AND top5000.artist = ?) ORDER BY top_albums.year, top_albums.position";
+
+
     updateData() {
-        connection.query("SELECT * FROM employees", function(err, results){
+        var query = "SELECT employees.id, employees.first_name, employees.last_name, role.title FROM employees INNER JOIN role ON (employees.role_id = role.id) ORDER BY employees.id;"
+        // var query = "SELECT employees.id, employees.first_name, employees.last_name, role.title";
+        // query += "FROM employees INNER JOIN role ON (employees.role_id = role.id)";
+        // query += " ORDER BY employees.id;";
+
+        connection.query(query, function(err, results){
             if (err) throw err;
         
-
         inquirer
             .prompt([
                 {
@@ -200,7 +209,7 @@ class Functions {
                     choices: function() {
                         var choiceArray = [];
                         for (var i = 0; i < results.length; i++) {
-                            choiceArray.push(results[i].first_name + " " + results[i].last_name);
+                            choiceArray.push(results[i].first_name + " " + results[i].last_name + " || " + results[i].title);
                         }
                         return choiceArray;
                     },
