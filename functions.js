@@ -140,6 +140,54 @@ class Functions {
         }); // end .then function
     } //end start() function
 
+    viewData() {
+        inquirer
+            .prompt([
+                {
+                    name: "action",
+                    type: "rawlist",
+                    message: "Which data whould you like to view?",
+                    choices: [
+                        "Departments",
+                        "Roles",
+                        "Employees"
+                    ]
+                },
+            ])
+            .then(function(answer) {
+                switch (answer.action) {
+                case "Departments":
+                    connection.query("SELECT * FROM department", function(err, results){
+                        if (err) throw err;
+                        for (var i = 0; i < results.length; i++) {
+                           console.log("ID: " + results[i].id + " || Name: " + results[i].name); 
+                        }
+                    })
+                    break;
+                
+                case "Roles":
+                    connection.query("SELECT * FROM role", function(err, results){
+                        if (err) throw err;
+                        for (var i = 0; i < results.length; i++) {
+                            console.log("ID: " + results[i].id + " || Title: " + results[i].title + " || Salary: " + results[i].salary + " || Department ID: " + results[i].department_id); 
+                        }
+                    })
+                    break;
+                
+                case "Employees":
+                    connection.query("SELECT * FROM employees", function(err, results){
+                        if (err) throw err;
+                        for (var i = 0; i < results.length; i++) {
+                            console.log("ID: " + results[i].id + " || First Name: " + results[i].first_name + " || Last Name: " + results[i].last_name + " || Role ID: " + results[i].role_id + " || Manager ID: " + results[i].manager_id); 
+                        }
+                    })
+                    break;
+
+
+                }
+            });
+    }
+
 
 } // end class
 
