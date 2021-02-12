@@ -1,5 +1,7 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+const Functions = require("./functions");
+
 
 // create the connection information for the sql database
 var connection = mysql.createConnection({
@@ -25,6 +27,7 @@ connection.connect(function(err) {
 
 // function to run initial prompt to user
 function start() {
+    const grabfunction = new Functions();
     inquirer
         .prompt({
             name: "action",
@@ -39,7 +42,7 @@ function start() {
         .then(function(answer) {
             switch (answer.action) {
             case "Add departments, roles, employees":
-                addData();
+                grabfunction.addData();
                 break;
             
             case "View departments, roles, employees":
@@ -53,3 +56,4 @@ function start() {
 
     }); // end .then function
 } //end start() function
+
