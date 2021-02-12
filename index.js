@@ -46,11 +46,11 @@ function start() {
                 break;
             
             case "View departments, roles, employees":
-                viewData();
+                grabfunction.viewData();
                 break;
             
             case "Update employee roles":
-                updateData();
+                grabfunction.updateData();
                 break;
             } 
 

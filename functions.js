@@ -32,11 +32,55 @@ class Functions {
                     "Add a department",
                     "Add a role",
                     "Add an employee"
-                ]},
+                ]
+            },
             {
                 name: "dept",
                 type: "input",
-                message: "Enter the new department name: "
+                message: "Enter the new department name: ",
+                when: (answers) => answers.action === "Add a department"
+            },
+            {
+                name: "role_title",
+                type: "input",
+                message: "Enter the new role title: ",
+                when: (answers) => answers.action === "Add a role"
+            },
+            {
+                name: "role_salary",
+                type: "input",
+                message: "Enter the new role salary: ",
+                when: (answers) => answers.action === "Add a role"
+            },
+            {
+                name: "role_dept",
+                type: "input",
+                message: "Enter the new role's department id: ",
+                when: (answers) => answers.action === "Add a role"
+            },
+            {
+                name: "emp_first",
+                type: "input",
+                message: "Enter the new employee's first name: ",
+                when: (answers) => answers.action === "Add an employee"
+            },
+            {
+                name: "emp_last",
+                type: "input",
+                message: "Enter the new employee's last name: ",
+                when: (answers) => answers.action === "Add an employee"
+            },
+            {
+                name: "emp_role",
+                type: "input",
+                message: "Enter the new employee's role id: ",
+                when: (answers) => answers.action === "Add an employee"
+            },
+            {
+                name: "emp_man",
+                type: "input",
+                message: "Enter the new employee's manager id: ",
+                when: (answers) => answers.action === "Add an employee"
             }
         ])
         .then(function(answer) {
@@ -47,19 +91,52 @@ class Functions {
                     "INSERT INTO department SET ?",
                     {
                         name: answer.dept
-                    }
+                    },
+                    function(err) {
+                        if (err) throw err;
+                        console.log("Your department was created successfully!");
+                        // re-prompt the user for if they want to add more
+                        // start();
+                      }
                 )
                 break;
             
             case "Add a role":
-                viewData();
+                connection.query(
+                    "INSERT INTO role SET ?",
+                    {
+                        title: answer.role_title,
+                        salary: answer.role_salary,
+                        department_id: answer.role_dept
+                    },
+                    function(err) {
+                        if (err) throw err;
+                        console.log("Your role was created successfully!");
+                        // re-prompt the user for if they want to add more
+                        // start();
+                      }
+                )
                 break;
-            
-            case "Add an employee":
-                updateData();
-                break;
-            } 
 
+            case "Add an employee":
+                connection.query(
+                    "INSERT INTO employees SET ?",
+                    {
+                        first_name: answer.emp_first,
+                        last_name: answer.emp_last,
+                        role_id: answer.emp_role,
+                        manager_id: answer.emp_man
+                    },
+                    function(err) {
+                        if (err) throw err;
+                        console.log("Your employee was created successfully!");
+                        // re-prompt the user for if they want to add more
+                        // start();
+                      }
+                )
+                break;
+
+            } 
         }); // end .then function
     } //end start() function
 
