@@ -187,41 +187,45 @@ class Functions {
             });
     }
 
-    //var query = "SELECT top_albums.year, top_albums.album, top_albums.position, top5000.song, top5000.artist ";
-    //query += "FROM top_albums INNER JOIN top5000 ON (top_albums.artist = top5000.artist AND top_albums.year ";
-    //query += "= top5000.year) WHERE (top_albums.artist = ? AND top5000.artist = ?) ORDER BY top_albums.year, top_albums.position";
-
 
     updateData() {
-        var query = "SELECT employees.id, employees.first_name, employees.last_name, role.title FROM employees INNER JOIN role ON (employees.role_id = role.id) ORDER BY employees.id;"
-        // var query = "SELECT employees.id, employees.first_name, employees.last_name, role.title";
-        // query += "FROM employees INNER JOIN role ON (employees.role_id = role.id)";
-        // query += " ORDER BY employees.id;";
-
-        connection.query(query, function(err, results){
+        connection.query("SELECT * FROM employees", function(err, results) {
             if (err) throw err;
-        
-        inquirer
-            .prompt([
+            // once you have the employees, prompt the user for which employee they'd like to update
+            inquirer
+              .prompt([
                 {
-                    name: "emp_update",
-                    type: "rawlist",
-                    choices: function() {
-                        var choiceArray = [];
-                        for (var i = 0; i < results.length; i++) {
-                            choiceArray.push(results[i].first_name + " " + results[i].last_name + " || " + results[i].title);
-                        }
-                        return choiceArray;
-                    },
-                    message: "Which employee would you like to update?"
+                    name: "choice",
+                    type: "input",
+                    message: "Enter the Employee ID of the employee you wish to update:"
                 },
-                
-            ])
-            .then(function(answer) {
-                console.log(answer);
-            });
-        });
-    }
+                {
+                    name: "new_role",
+                    type: "input",                  
+                    message: "Enter a new role ID for this employee:"
+                }  
+              ])
+              .then(function(answer) {
+
+                connection.query(
+                    "UPDATE employees SET ? WHERE ?",
+                    [
+                      {
+                        role_id: answer.new_role
+                      },
+                      {
+                        id: answer.choice
+                      }
+                    ],
+                    function(error) {
+                      if (error) throw err;
+                      console.log("Employee updated successfully!");
+                    }
+                  );
+
+              });
+          });
+        }
 
 
 } // end class
