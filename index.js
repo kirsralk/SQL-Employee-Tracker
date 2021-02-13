@@ -52,8 +52,14 @@ function start() {
             case "Update employee roles":
                 grabfunction.updateData();
                 break;
-            } 
+            }
+        
 
-    }); // end .then function
+    });
+        // .then(() => grabfunction.quit());
+    // .then(() => grabfunction.quit()); // end .then function
 } //end start() function
 
+function quit1() {
+    console.log("this ran from index 64");
+}

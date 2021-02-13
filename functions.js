@@ -16,8 +16,14 @@ var connection = mysql.createConnection({
   database: "empTrack_DB"
 });
 
+function quit() {
+    console.log("\nThank you for using Employee Tracker!");
+    process.exit(0);
+}; 
+
 class Functions {
     constructor() {
+        this.test = 0;
     }
 
     addData() {
@@ -93,9 +99,8 @@ class Functions {
                     },
                     function(err) {
                         if (err) throw err;
-                        console.log("Your department was created successfully!");
-                        // re-prompt the user for if they want to add more
-                        // start();
+                        console.log("\nYour department '" + answer.dept + "' was created successfully!");
+                        quit();
                       }
                 )
                 break;
@@ -110,9 +115,9 @@ class Functions {
                     },
                     function(err) {
                         if (err) throw err;
-                        console.log("Your role was created successfully!");
-                        // re-prompt the user for if they want to add more
-                        // start();
+                        console.log("\nYour role '" + answer.role_title + 
+                        "' with a salary of " + answer.role_salary + " was created successfully!");
+                        quit();
                       }
                 )
                 break;
@@ -128,16 +133,14 @@ class Functions {
                     },
                     function(err) {
                         if (err) throw err;
-                        console.log("Your employee was created successfully!");
-                        // re-prompt the user for if they want to add more
-                        // start();
+                        console.log("\nYour employee '" + answer.emp_first + " " + answer.emp_last + "' was created successfully!");
+                        quit();
                       }
                 )
                 break;
-
             } 
         }); // end .then function
-    } //end start() function
+    } //end addData() function
 
     viewData() {
         inquirer
@@ -158,46 +161,72 @@ class Functions {
                 case "Departments":
                     connection.query("SELECT * FROM department", function(err, results){
                         if (err) throw err;
+                        console.log("\nThe current DEPARTMENTS are:");
                         for (var i = 0; i < results.length; i++) {
-                           console.log("ID: " + results[i].id + " || Name: " + results[i].name); 
+                           console.log("ID: " + results[i].id + " | Name: " + results[i].name); 
                         }
+                        quit(); 
                     })
                     break;
+                    
                 
                 case "Roles":
                     connection.query("SELECT * FROM role", function(err, results){
                         if (err) throw err;
+                        console.log("\nThe current ROLES are:");
                         for (var i = 0; i < results.length; i++) {
-                            console.log("ID: " + results[i].id + " || Title: " + results[i].title + " || Salary: " + results[i].salary + " || Department ID: " + results[i].department_id); 
+                            console.log(
+                                "ID: " + results[i].id + 
+                                " | Title: " + results[i].title + 
+                                " | Salary: " + results[i].salary + 
+                                " | Department ID: " + results[i].department_id);
                         }
+                        quit(); 
                     })
                     break;
                 
                 case "Employees":
                     connection.query("SELECT * FROM employees", function(err, results){
                         if (err) throw err;
+                        console.log("\nThe current EMPLOYEES are:");
                         for (var i = 0; i < results.length; i++) {
-                            console.log("ID: " + results[i].id + " || First Name: " + results[i].first_name + " || Last Name: " + results[i].last_name + " || Role ID: " + results[i].role_id + " || Manager ID: " + results[i].manager_id); 
+                            console.log(
+                                "ID: " + results[i].id + 
+                                " | First Name: " + results[i].first_name + 
+                                " | Last Name: " + results[i].last_name + 
+                                " | Role ID: " + results[i].role_id + 
+                                " | Manager ID: " + results[i].manager_id);
                         }
+                        quit();
                     })
                     break;
-
-
                 }
             });
     }
 
 
     updateData() {
-        connection.query("SELECT * FROM employees", function(err, results) {
+        
+        var query = "SELECT employees.id, employees.first_name, employees.last_name, role.title FROM employees INNER JOIN role ON (employees.role_id = role.id) ORDER BY employees.id;"
+        // connection.query("SELECT * FROM employees", function(err, results) {
+        connection.query(query, function(err, results) {
             if (err) throw err;
+
             // once you have the employees, prompt the user for which employee they'd like to update
             inquirer
               .prompt([
                 {
                     name: "choice",
                     type: "input",
-                    message: "Enter the Employee ID of the employee you wish to update:"
+                    message: "Enter the Employee ID of the employee you wish to update:",
+                    validate: function(value) {
+                        if (isNaN(value) === false) {
+                            return true;
+                        } else {
+                            console.log(" Error: Please enter a valid number");
+                            return false;
+                        }
+                    }
                 },
                 {
                     name: "new_role",
@@ -206,7 +235,7 @@ class Functions {
                 }  
               ])
               .then(function(answer) {
-
+                
                 connection.query(
                     "UPDATE employees SET ? WHERE ?",
                     [
@@ -218,24 +247,17 @@ class Functions {
                       }
                     ],
                     function(error) {
-                      if (error) throw err;
-                      console.log("Employee updated successfully!");
+                        if (error) throw err;   
+
+                        var i = answer.choice;
+                        console.log("\n" + results[i].first_name + " " + results[i].last_name + "'s role was successfully updated.");
+                        quit();
                     }
-                  );
-
+                  )
               });
-          });
-        }
-
-
+            });
+            
+    }
 } // end class
-
-// function viewData() {
-
-// }
-
-// function updateData() {
-
-// }
 
 module.exports = Functions;
