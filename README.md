@@ -60,8 +60,6 @@ You are now ready to use the SQL-Employee-Tracker app!
 
 * Follow the prompts to add, view, update or delete entries in your database.
 
-For a video walkthrough of the app, check out the [SQL-Employee-Tracker Overview](https://drive.google.com/file/d/1Zh9wdipebyt72QSPLXgv7CfgAmUnX3-B/view?usp=sharing).
-
 
 ## Credits
 
