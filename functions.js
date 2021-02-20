@@ -32,7 +32,7 @@ class Functions {
             {
                 name: "action",
                 type: "rawlist",
-                message: "Welcome to Employee Tracker. What would you like to do?",
+                message: "Which would you like to add?",
                 choices: [
                     "Add a department",
                     "Add a role",
@@ -84,7 +84,7 @@ class Functions {
             {
                 name: "emp_man",
                 type: "input",
-                message: "Enter the new employee's manager id: ",
+                message: "Enter the new employee's manager id (if no manager, enter NULL): ",
                 when: (answers) => answers.action === "Add an employee"
             }
         ])
@@ -208,7 +208,6 @@ class Functions {
     updateData() {
         
         var query = "SELECT employees.id, employees.first_name, employees.last_name, role.title FROM employees INNER JOIN role ON (employees.role_id = role.id) ORDER BY employees.id;"
-        // connection.query("SELECT * FROM employees", function(err, results) {
         connection.query(query, function(err, results) {
             if (err) throw err;
 
@@ -250,7 +249,7 @@ class Functions {
                         if (error) throw err;   
 
                         var i = answer.choice;
-                        console.log("\n" + results[i].first_name + " " + results[i].last_name + "'s role was successfully updated.");
+                        console.log("\n Role was successfully updated.");
                         quit();
                     }
                   )
@@ -258,6 +257,98 @@ class Functions {
             });
             
     }
+
+    deleteData() {
+
+        var query = "SELECT * FROM department;";
+        // connection.query("SELECT * FROM employees", function(err, results) {
+        connection.query(query, function(err, results) {
+            if (err) throw err;
+
+        inquirer
+         .prompt([
+            {
+                name: "action",
+                type: "rawlist",
+                message: "Which would you like to delete?",
+                choices: [
+                    "Delete a department",
+                    "Delete a role",
+                    "Delete an employee"
+                ]
+            },
+            {
+                name: "dept",
+                type: "input",
+                message: "Enter the ID of the department to delete: ",
+                when: (answers) => answers.action === "Delete a department"
+            },
+            {
+                name: "role",
+                type: "input",
+                message: "Enter the ID of the role to delete: ",
+                when: (answers) => answers.action === "Delete a role"
+            },
+            {
+                name: "employee",
+                type: "input",
+                message: "Enter the ID of the employee to delete: ",
+                when: (answers) => answers.action === "Delete an employee"
+            }
+        ])
+        .then(function(answer) {
+            switch (answer.action) {
+            case "Delete a department":
+                // console.log("this line ran");
+                connection.query(
+                    "DELETE FROM department WHERE ?",
+                    {
+                        id: answer.dept
+                    },
+                    function(err) {
+                        if (err) throw err;
+                        // var i = (answer.dept);
+                        console.log("\nDepartment was deleted successfully.");
+                        quit();
+                      }
+                )
+                break;
+            
+            case "Delete a role":
+                // console.log("this line ran");
+                connection.query(
+                    "DELETE FROM role WHERE ?",
+                    {
+                        id: answer.role
+                    },
+                    function(err) {
+                        if (err) throw err;
+                        // var i = (answer.dept);
+                        console.log("\nRole was deleted successfully.");
+                        quit();
+                      }
+                )
+                break;
+
+            case "Delete an employee":
+                // console.log("this line ran");
+                connection.query(
+                    "DELETE FROM employees WHERE ?",
+                    {
+                        id: answer.employee
+                    },
+                    function(err) {
+                        if (err) throw err;
+                        // var i = (answer.dept);
+                        console.log("\nEmployee was deleted successfully.");
+                        quit();
+                      }
+                )
+                break;
+            } 
+        }); // end .then function
+        }); //end addData() function
+}
 } // end class
 
 module.exports = Functions;

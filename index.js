@@ -36,7 +36,8 @@ function start() {
             choices: [
                 "Add departments, roles, employees",
                 "View departments, roles, employees",
-                "Update employee roles"
+                "Update employee roles",
+                "Delete departments, roles, employees"
             ]
         })
         .then(function(answer) {
@@ -52,6 +53,10 @@ function start() {
             case "Update employee roles":
                 grabfunction.updateData();
                 break;
+            
+            case "Delete departments, roles, employees":
+                grabfunction.deleteData();
+                break;
             }
         
 
@@ -59,7 +64,3 @@ function start() {
         // .then(() => grabfunction.quit());
     // .then(() => grabfunction.quit()); // end .then function
 } //end start() function
-
-function quit1() {
-    console.log("this ran from index 64");
-}
