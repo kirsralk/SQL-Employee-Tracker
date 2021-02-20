@@ -1,5 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+const cTable = require("console.table");
 
 // create the connection information for the sql database
 var connection = mysql.createConnection({
@@ -100,9 +101,13 @@ class Functions {
                     function(err) {
                         if (err) throw err;
                         console.log("\nYour department '" + answer.dept + "' was created successfully!");
-                        quit();
-                      }
-                )
+                      });
+                connection.query("SELECT * FROM department", function(err, results){
+                    if (err) throw err;
+                    console.log("\nThe current DEPARTMENTS are:");
+                    console.table(results);
+                    quit(); 
+                });
                 break;
             
             case "Add a role":
@@ -117,9 +122,12 @@ class Functions {
                         if (err) throw err;
                         console.log("\nYour role '" + answer.role_title + 
                         "' with a salary of " + answer.role_salary + " was created successfully!");
-                        quit();
-                      }
-                )
+                      });
+                connection.query("SELECT * FROM role", function(err, results){
+                    if (err) throw err;
+                    console.table(results);
+                    quit(); 
+                });
                 break;
 
             case "Add an employee":
@@ -134,9 +142,15 @@ class Functions {
                     function(err) {
                         if (err) throw err;
                         console.log("\nYour employee '" + answer.emp_first + " " + answer.emp_last + "' was created successfully!");
-                        quit();
-                      }
-                )
+                        console.table()
+
+                    });
+                connection.query("SELECT * FROM employees", function(err, results){
+                    if (err) throw err;
+                    console.log("\nThe current EMPLOYEES are:");
+                    console.table(results);
+                    quit();
+                });
                 break;
             } 
         }); // end .then function
@@ -161,10 +175,7 @@ class Functions {
                 case "Departments":
                     connection.query("SELECT * FROM department", function(err, results){
                         if (err) throw err;
-                        console.log("\nThe current DEPARTMENTS are:");
-                        for (var i = 0; i < results.length; i++) {
-                           console.log("ID: " + results[i].id + " | Name: " + results[i].name); 
-                        }
+                        console.table(results);
                         quit(); 
                     })
                     break;
@@ -174,13 +185,7 @@ class Functions {
                     connection.query("SELECT * FROM role", function(err, results){
                         if (err) throw err;
                         console.log("\nThe current ROLES are:");
-                        for (var i = 0; i < results.length; i++) {
-                            console.log(
-                                "ID: " + results[i].id + 
-                                " | Title: " + results[i].title + 
-                                " | Salary: " + results[i].salary + 
-                                " | Department ID: " + results[i].department_id);
-                        }
+                        console.table(results);
                         quit(); 
                     })
                     break;
@@ -189,14 +194,7 @@ class Functions {
                     connection.query("SELECT * FROM employees", function(err, results){
                         if (err) throw err;
                         console.log("\nThe current EMPLOYEES are:");
-                        for (var i = 0; i < results.length; i++) {
-                            console.log(
-                                "ID: " + results[i].id + 
-                                " | First Name: " + results[i].first_name + 
-                                " | Last Name: " + results[i].last_name + 
-                                " | Role ID: " + results[i].role_id + 
-                                " | Manager ID: " + results[i].manager_id);
-                        }
+                        console.table(results);
                         quit();
                     })
                     break;
@@ -249,10 +247,14 @@ class Functions {
                         if (error) throw err;   
 
                         var i = answer.choice;
-                        console.log("\n Role was successfully updated.");
-                        quit();
+                        console.log("\nRole was successfully updated.");
                     }
-                  )
+                  );
+                connection.query("SELECT * FROM employees", function(err, results){
+                    if (err) throw err;
+                    console.table(results);
+                    quit();
+                });
               });
             });
             
@@ -309,9 +311,12 @@ class Functions {
                         if (err) throw err;
                         // var i = (answer.dept);
                         console.log("\nDepartment was deleted successfully.");
+                });
+                connection.query("SELECT * FROM department", function(err, results){
+                        if (err) throw err;
+                        console.table(results);
                         quit();
-                      }
-                )
+                });
                 break;
             
             case "Delete a role":
@@ -325,9 +330,12 @@ class Functions {
                         if (err) throw err;
                         // var i = (answer.dept);
                         console.log("\nRole was deleted successfully.");
+                });
+                connection.query("SELECT * FROM role", function(err, results){
+                        if (err) throw err;
+                        console.table(results);
                         quit();
-                      }
-                )
+                });
                 break;
 
             case "Delete an employee":
@@ -342,13 +350,17 @@ class Functions {
                         // var i = (answer.dept);
                         console.log("\nEmployee was deleted successfully.");
                         quit();
-                      }
-                )
+                });
+                connection.query("SELECT * FROM role", function(err, results){
+                        if (err) throw err;
+                        console.table(results);
+                        quit();
+                });
                 break;
-            } 
+            } //end switch
         }); // end .then function
-        }); //end addData() function
-}
+        }); // end connection.query
+    }// end deleteData()
 } // end class
 
 module.exports = Functions;

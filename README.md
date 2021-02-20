@@ -3,7 +3,7 @@
 ## Description 
 
 * [Github Repository](https://github.com/kirsralk/SQL-Employee-Tracker).
-* [Tutorial on Screencastify](https://drive.google.com/file/d/1sYjqjJK--0wC38iPZFHRyVkysHRwCWKs/view?usp=sharing).
+* [Tutorial on Screencastify](https://drive.google.com/file/d/1EnLtpP6rwAFPQ0TcvvmuKazP_iw1UVzz/view?usp=sharing).
 
 SQL-Employee-Tracker is a CLI based app that allows users to create and modify a workplace database using MySQL using the following schema:
 ![Schema Layout](./assets/schema.png)
@@ -45,6 +45,7 @@ By default, this will install all modules listed as dependencies in a new subfol
 * Install the additional NPM package Inquirer by running the command "npm install inquirer" in your terminal.
 * Install the additional NPM package Express by running the command "npm install express" in your terminal.
 * Install the additional NPM package MySQL by running the command "npm install mysql" in your terminal.
+* Install the console.table NPM package for MySQL by running the command "npm install console.table --save" in your terminal.
 
 These commands will install additional node_module files and package-lock.json.
 
