@@ -2,13 +2,14 @@
 
 ## Description 
 
+* [Github Repository](https://github.com/kirsralk/SQL-Employee-Tracker).
+* [Tutorial on Screencastify](https://drive.google.com/file/d/1sYjqjJK--0wC38iPZFHRyVkysHRwCWKs/view?usp=sharing).
+
 SQL-Employee-Tracker is a CLI based app that allows users to create and modify a workplace database using MySQL using the following schema:
 ![Schema Layout](./assets/schema.png)
 
-
-* [Github Repository](https://github.com/kirsralk/SQL-Employee-Tracker).
-* [Tutorial on Screencastify](https://drive.google.com/file/d/1sYjqjJK--0wC38iPZFHRyVkysHRwCWKs/view?usp=sharing).
 * App Screenshot:
+
 ![App Screenshot](./assets/app-screenshot.png)
 
 ### User Story
